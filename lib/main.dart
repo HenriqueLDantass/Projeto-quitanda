@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'src/auth/sing-in-screen.dart';
+import 'src/auth/screens/sing-in-screen.dart';
 
 void main() {
   runApp(const MyApp());

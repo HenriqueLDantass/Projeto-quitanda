@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-
-import 'src/auth/screens/sing-in-screen.dart';
+import 'package:quitanda/core/routes/app_routes.dart';
+import 'package:get/get.dart';
+import 'package:quitanda/modules/auth/controller/auth_controller.dart';
 
 void main() {
+  Get.put<AuthControlller>(AuthControlller());
+
   runApp(const MyApp());
 }
 
@@ -11,12 +14,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
+      title: "Quitanda Online",
       theme: ThemeData(
-        primarySwatch: Colors.green,
-      ),
+          primarySwatch: Colors.green,
+          scaffoldBackgroundColor: Colors.white.withAlpha(150)),
       debugShowCheckedModeBanner: false,
-      home: const SingInScreen(),
+      initialRoute: "/splash",
+      getPages: AppRoutes.pages,
     );
   }
 }

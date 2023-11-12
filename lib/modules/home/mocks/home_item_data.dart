@@ -91,11 +91,11 @@ List<String> categories = [
 ];
 
 ProfileModel user = ProfileModel(
-    celular: "99 9999-9999",
+    phone: "99 9999-9999",
     cpf: "99999999",
     name: "Henrique Dantas",
     email: "Henrique@Gmail.com",
-    senha: "");
+    password: "");
 
 List<OrdersModel> orders = [
   // Pedido 01

@@ -36,7 +36,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           CustomTextField(
             icon: Icons.phone,
             labelText: "Celular",
-            initialValue: appData.user.celular,
+            initialValue: appData.user.phone,
             readOnly: true,
           ),
           CustomTextField(
@@ -96,19 +96,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   CustomTextField(
                     icon: Icons.lock,
                     labelText: "Senha atual",
-                    initialValue: appData.user.celular,
+                    initialValue: appData.user.phone,
                     isSecret: true,
                   ),
                   CustomTextField(
                     icon: Icons.lock,
                     labelText: "Nova senha",
-                    initialValue: appData.user.celular,
+                    initialValue: appData.user.phone,
                     isSecret: true,
                   ),
                   CustomTextField(
                     icon: Icons.lock,
                     labelText: "Confirme nova senha",
-                    initialValue: appData.user.celular,
+                    initialValue: appData.user.phone,
                     isSecret: true,
                   ),
                   Padding(

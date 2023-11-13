@@ -11,7 +11,51 @@ class AuthControlller extends GetxController {
   final UtilsServices utilsServices = UtilsServices();
   ProfileModel user = ProfileModel();
 
-  Future<void> validadeToken() async {}
+  saveTokenAndProcessedToBase() {
+    utilsServices.savarLocalData(key: "token", data: user.token!);
+    Get.offAllNamed(NamedRoutes.baseRoute);
+  }
+
+  @override
+  void onInit() {
+    super.onInit();
+
+    validateToken();
+  }
+
+  Future<void> validateToken() async {
+    //recuperar token
+    final String? token = await utilsServices.readLocalData(key: "token");
+    //ir para tela base
+    if (token == null) {
+      Get.offAllNamed(NamedRoutes.signRoute);
+      return;
+    }
+
+    AuthResult result = await authRepository.validadeToken(token);
+
+    result.when(
+      sucess: (user) {
+        this.user = user;
+        saveTokenAndProcessedToBase();
+      },
+      error: (message) {
+        singOut();
+      },
+    );
+  }
+
+  Future<void> singOut() async {
+    //zerar user
+    user = ProfileModel();
+
+    //remover token local
+    await utilsServices.deleteLocalData(key: "token");
+
+    //ir para login
+    Get.offAllNamed(NamedRoutes.signRoute);
+  }
+
 //Loding do botao entrar
   Future<void> signLoading({
     required String email,
@@ -25,7 +69,7 @@ class AuthControlller extends GetxController {
     result.when(
       sucess: (user) {
         this.user = user;
-        Get.offAllNamed(NamedRoutes.baseRoute);
+        saveTokenAndProcessedToBase();
       },
       error: (error) {
         utilsServices.messageToast(message: error, isError: true);

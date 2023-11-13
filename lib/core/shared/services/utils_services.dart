@@ -1,9 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 class UtilsServices {
+  final storage = const FlutterSecureStorage();
+
+//salvando dado localmente em segurança
+  Future<void> savarLocalData(
+      {required String key, required String data}) async {
+    storage.write(key: key, value: data);
+  }
+
+  //lendo o dado
+  Future<String?> readLocalData({required String key}) async {
+    return await storage.read(key: key);
+  }
+
+  //deletando o dado
+  Future<void> deleteLocalData({required String key}) async {
+    await storage.delete(key: key);
+  }
+
   //metodo para converer a moeda para ptbr
   String priceToCurrency(double price) {
     NumberFormat numberFormat = NumberFormat.simpleCurrency(locale: "pt_BR");

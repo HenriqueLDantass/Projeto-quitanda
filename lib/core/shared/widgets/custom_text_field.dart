@@ -10,17 +10,23 @@ class CustomTextField extends StatefulWidget {
   final bool readOnly;
   final String? Function(String?)? validator;
   final TextEditingController? controller;
-
-  const CustomTextField(
-      {super.key,
-      required this.icon,
-      required this.labelText,
-      this.controller,
-      this.initialValue,
-      this.inputFormatter,
-      this.validator,
-      this.readOnly = false,
-      this.isSecret = false}); //falando que por padrao sera falso
+  final TextInputType? keyboardType;
+  final void Function(String?)? onSaved;
+  final GlobalKey<FormFieldState>? formFieldKey;
+  const CustomTextField({
+    super.key,
+    required this.icon,
+    required this.labelText,
+    this.controller,
+    this.initialValue,
+    this.inputFormatter,
+    this.validator,
+    this.readOnly = false,
+    this.isSecret = false,
+    this.keyboardType,
+    this.onSaved,
+    this.formFieldKey,
+  }); //falando que por padrao sera falso
 
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
@@ -41,13 +47,15 @@ class _CustomTextFieldState extends State<CustomTextField> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10.0),
       child: TextFormField(
+        key: widget.formFieldKey,
         controller: widget.controller,
         readOnly: widget.readOnly,
         initialValue: widget.initialValue,
         inputFormatters: widget.inputFormatter,
         obscureText: obscureText,
+        onSaved: widget.onSaved,
         validator: widget.validator,
-        keyboardType: TextInputType.emailAddress,
+        keyboardType: widget.keyboardType,
         decoration: InputDecoration(
           isDense: true,
           suffixIcon: widget.isSecret

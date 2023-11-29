@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:quitanda/core/shared/widgets/custom_text_field.dart';
+import 'package:quitanda/modules/auth/controller/auth_controller.dart';
 import 'package:quitanda/modules/home/mocks/home_item_data.dart' as appData;
 
 class ProfileScreen extends StatefulWidget {
@@ -10,12 +12,19 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  AuthControlller authControlller = Get.find<AuthControlller>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Perfil usuario"),
-        actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.logout))],
+        actions: [
+          IconButton(
+              onPressed: () {
+                authControlller.singOut();
+              },
+              icon: const Icon(Icons.logout))
+        ],
       ),
       body: ListView(
         physics: const BouncingScrollPhysics(),

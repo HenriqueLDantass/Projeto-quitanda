@@ -7,18 +7,22 @@ import 'package:quitanda/modules/auth/repository/auth_erros.dart' as erros;
 class AuthRepository {
   final HttpManager _httpManager = HttpManager();
 
-  Future<AuthResult> validadeToken(String token) async {
-    final result = await _httpManager.restRequest(
-        url: Endpoints.validadeToken,
-        method: HttpMethods.post,
-        headers: {"X-Parse-Session-Token": token});
-
+  AuthResult handleleUserOrError(Map<dynamic, dynamic> result) {
     if (result['result'] != null) {
       final user = ProfileModel.fromJson(result['result']);
       return AuthResult.sucess(user);
     } else {
       return AuthResult.error(erros.authErrorsString(result['error']));
     }
+  }
+
+  Future<AuthResult> validadeToken(String token) async {
+    final result = await _httpManager.restRequest(
+        url: Endpoints.validadeToken,
+        method: HttpMethods.post,
+        headers: {"X-Parse-Session-Token": token});
+
+    return handleleUserOrError(result);
   }
 
   Future<AuthResult> signin(
@@ -31,12 +35,23 @@ class AuthRepository {
         "password": password,
       },
     );
+    return handleleUserOrError(result);
+  }
 
-    if (result['result'] != null) {
-      final user = ProfileModel.fromJson(result['result']);
-      return AuthResult.sucess(user);
-    } else {
-      return AuthResult.error(erros.authErrorsString(result['error']));
-    }
+  Future<AuthResult> signUp(ProfileModel user) async {
+    final result = await _httpManager.restRequest(
+      url: Endpoints.signUp,
+      method: HttpMethods.post,
+      body: user.toJson(),
+    );
+    return handleleUserOrError(result);
+  }
+
+  Future<void> resetSenha(String email) async {
+    await _httpManager.restRequest(
+      url: Endpoints.resetSenha,
+      method: HttpMethods.post,
+      body: {"email": email},
+    );
   }
 }

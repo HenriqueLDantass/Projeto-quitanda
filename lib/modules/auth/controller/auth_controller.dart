@@ -56,6 +56,24 @@ class AuthControlller extends GetxController {
     Get.offAllNamed(NamedRoutes.signRoute);
   }
 
+  Future<void> signUp() async {
+    isLoading.value = true;
+
+    AuthResult result = await authRepository.signUp(user);
+
+    isLoading.value = false;
+
+    result.when(
+      sucess: (user) {
+        this.user = user;
+        saveTokenAndProcessedToBase();
+      },
+      error: (error) {
+        utilsServices.messageToast(message: error, isError: true);
+      },
+    );
+  }
+
 //Loding do botao entrar
   Future<void> signLoading({
     required String email,
@@ -76,5 +94,9 @@ class AuthControlller extends GetxController {
       },
     );
     isLoading.value = false;
+  }
+
+  Future<void> resetSenha(String email) async {
+    await authRepository.resetSenha(email);
   }
 }

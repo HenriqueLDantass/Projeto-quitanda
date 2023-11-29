@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:quitanda/core/shared/widgets/quantity_button.dart';
+import 'package:quitanda/modules/base/controller/navigation_controller.dart';
+import 'package:quitanda/modules/cart/controller/cart_controller.dart';
 import 'package:quitanda/modules/home/models/home_model.dart';
 import 'package:quitanda/core/shared/services/utils_services.dart';
 
 class ProductorWidget extends StatefulWidget {
-  const ProductorWidget({super.key, required this.item});
-  final ItemModel item;
+  ProductorWidget({super.key});
+  final ItemModel item = Get.arguments;
 
   @override
   State<ProductorWidget> createState() => _ProductorWidgetState();
@@ -15,6 +18,8 @@ class _ProductorWidgetState extends State<ProductorWidget> {
   int quantidade = 1;
 
   UtilsServices utilsServices = UtilsServices();
+  final navigationController = Get.find<NavigatorController>();
+  final cartcontroller = Get.find<CartController>();
 
   @override
   Widget build(BuildContext context) {
@@ -24,10 +29,11 @@ class _ProductorWidgetState extends State<ProductorWidget> {
         children: [
           Column(
             children: [
+              //IMAGEM
               Expanded(
                 child: Hero(
                   tag: widget.item.imgUrl,
-                  child: Image.asset(widget.item.imgUrl),
+                  child: Image.network(widget.item.imgUrl),
                 ),
               ),
               Expanded(
@@ -49,6 +55,7 @@ class _ProductorWidgetState extends State<ProductorWidget> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
+                        //NOME, ADICIONAR
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -70,6 +77,7 @@ class _ProductorWidgetState extends State<ProductorWidget> {
                             )
                           ],
                         ),
+                        //PREÇO
                         Text(
                           utilsServices.priceToCurrency(widget.item.price),
                           style: const TextStyle(
@@ -80,6 +88,7 @@ class _ProductorWidgetState extends State<ProductorWidget> {
                         const SizedBox(
                           height: 10,
                         ),
+                        //DESCRIÇÃO
                         Expanded(
                           child: SingleChildScrollView(
                             physics: const BouncingScrollPhysics(),
@@ -95,7 +104,15 @@ class _ProductorWidgetState extends State<ProductorWidget> {
                             style: ElevatedButton.styleFrom(
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(45))),
-                            onPressed: () {},
+                            onPressed: () {
+                              Get.back();
+
+                              cartcontroller.addItemCart(
+                                  itemModel: widget.item, quantity: quantidade);
+
+                              navigationController.navigatePageView(
+                                  page: NavigatorName.cart);
+                            },
                             icon: const Icon(Icons.shopping_cart_outlined),
                             label: const Text("Add ao Carrinho"),
                           ),

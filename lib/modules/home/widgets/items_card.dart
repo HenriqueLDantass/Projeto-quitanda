@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:quitanda/core/routes/app_routes.dart';
+import 'package:quitanda/modules/cart/controller/cart_controller.dart';
 import 'package:quitanda/modules/home/models/home_model.dart';
 import 'package:quitanda/core/shared/services/utils_services.dart';
 import 'package:quitanda/modules/home/widgets/productors_widget.dart';
@@ -27,19 +30,16 @@ class _ItemsCardState extends State<ItemsCard> {
   }
 
   UtilsServices utilsServices = UtilsServices();
+  final controller = Get.find<CartController>();
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
         GestureDetector(
-          onTap: () => Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (c) => ProductorWidget(
-                item: widget.item,
-              ),
-            ),
-          ),
+          onTap: () {
+            Get.toNamed(NamedRoutes.productWidget, arguments: widget.item);
+          },
           child: Card(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),
@@ -54,7 +54,7 @@ class _ItemsCardState extends State<ItemsCard> {
                   Expanded(
                     child: Hero(
                       tag: widget.item.imgUrl,
-                      child: Image.asset(
+                      child: Image.network(
                         widget.item.imgUrl,
                         key: gkImage,
                       ),
@@ -102,6 +102,7 @@ class _ItemsCardState extends State<ItemsCard> {
               child: InkWell(
                 onTap: () {
                   switchIcon();
+                  controller.addItemCart(itemModel: widget.item);
                   widget.cartAnimationMethod(gkImage);
                 },
                 child: Ink(

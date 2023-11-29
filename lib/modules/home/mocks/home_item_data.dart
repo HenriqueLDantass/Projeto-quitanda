@@ -59,14 +59,17 @@ ItemModel papaya = ItemModel(
 
 List<CartModel> cartItems = [
   CartModel(
+    id: "1",
     itemModel: apple,
     quantity: 3,
   ),
   CartModel(
+    id: "1",
     itemModel: mango,
     quantity: 1,
   ),
   CartModel(
+    id: "1",
     itemModel: papaya,
     quantity: 4,
   )
@@ -112,10 +115,12 @@ List<OrdersModel> orders = [
     total: 11.0,
     items: [
       CartModel(
+        id: "1",
         itemModel: apple,
         quantity: 2,
       ),
       CartModel(
+        id: "1",
         itemModel: mango,
         quantity: 2,
       ),
@@ -136,6 +141,7 @@ List<OrdersModel> orders = [
     total: 11.5,
     items: [
       CartModel(
+        id: "1",
         itemModel: guava,
         quantity: 1,
       ),

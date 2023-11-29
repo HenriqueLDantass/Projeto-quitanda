@@ -66,12 +66,12 @@ class StatusWidget extends StatelessWidget {
 }
 
 class _DividerCustom extends StatelessWidget {
-  const _DividerCustom({super.key});
+  const _DividerCustom();
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
       color: Colors.grey.shade300,
       width: 2,
       height: 10,
@@ -81,7 +81,7 @@ class _DividerCustom extends StatelessWidget {
 
 class _Statusdot extends StatelessWidget {
   const _Statusdot(
-      {super.key, required this.isActive, required this.text, this.background});
+      {required this.isActive, required this.text, this.background});
 
   final bool isActive;
   final String text;
@@ -115,7 +115,7 @@ class _Statusdot extends StatelessWidget {
         Expanded(
             child: Text(
           text,
-          style: TextStyle(fontSize: 12),
+          style: const TextStyle(fontSize: 12),
         ))
       ],
     );

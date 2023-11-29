@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:quitanda/core/shared/widgets/dialog_paymant.dart';
+import 'package:quitanda/modules/cart/controller/cart_controller.dart';
 import 'package:quitanda/modules/cart/models/cart_models.dart';
 import 'package:quitanda/modules/cart/widgets/cart_tile.dart';
 import 'package:quitanda/core/shared/services/utils_services.dart';
@@ -26,15 +28,6 @@ class _CartScreenState extends State<CartScreen> {
     });
   }
 
-  double precoTotal() {
-    double total = 0;
-
-    for (var item in appData.cartItems) {
-      total += item.totalprice();
-    }
-    return total;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,12 +37,22 @@ class _CartScreenState extends State<CartScreen> {
       body: Column(
         children: [
           Expanded(
-            child: ListView.builder(
-              itemCount: appData.cartItems.length,
-              itemBuilder: (_, index) {
-                return CartTile(
-                  removerItem: removeCard,
-                  cartModel: appData.cartItems[index],
+            child: GetBuilder<CartController>(
+              builder: (controller) {
+                if (controller.cartItems.isEmpty) {
+                  return const Column(
+                    children: [Text("Não tem nada no carrinho!")],
+                  );
+                }
+
+                return ListView.builder(
+                  itemCount: controller.cartItems.length,
+                  itemBuilder: (_, index) {
+                    return CartTile(
+                      removerItem: removeCard,
+                      cartModel: controller.cartItems[index],
+                    );
+                  },
                 );
               },
             ),
@@ -77,12 +80,16 @@ class _CartScreenState extends State<CartScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const Text("Total geral"),
-                Text(
-                  utilsServices.priceToCurrency(precoTotal()),
-                  style: const TextStyle(
-                      fontSize: 25,
-                      color: Colors.green,
-                      fontWeight: FontWeight.bold),
+                GetBuilder<CartController>(
+                  builder: (controller) {
+                    return Text(
+                      utilsServices.priceToCurrency(controller.precoTotal()),
+                      style: const TextStyle(
+                          fontSize: 25,
+                          color: Colors.green,
+                          fontWeight: FontWeight.bold),
+                    );
+                  },
                 ),
                 const SizedBox(
                   height: 20,

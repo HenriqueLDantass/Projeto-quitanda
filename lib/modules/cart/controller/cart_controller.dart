@@ -45,6 +45,13 @@ class CartController extends GetxController {
     return preco;
   }
 
+  Future chechout() async {
+    cartRepository.chechout(
+      token: authcontroller.user.token!,
+      total: precoTotal(),
+    );
+  }
+
 //recuperando o index
   int indexCartItem(ItemModel cartModel) {
     return cartItems
